@@ -1,15 +1,23 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import upload, reports, neighbourhood
 from app.models.database import Base, engine
 
-Base.metadata.create_all(bind=engine)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+    yield
+
 
 app = FastAPI(
     title="Proptyze API",
     description="Property analysis platform — video in, structured report out.",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
