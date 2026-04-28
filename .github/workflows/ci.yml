@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r backend/requirements.txt
-      - run: python -c "from backend.app.main import app; print('OK')"
+      - run: cd backend && python -c "from app.main import app; print('OK')"
 
   frontend:
     runs-on: ubuntu-latest
